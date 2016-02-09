@@ -1,7 +1,8 @@
 language: android
+sudo: false
 android:
   components:
     - platform-tools
-    - tools
-    - build-tools-23.0.1
+    - build-tools-23.0.0
     - android-23
+script: ./gradlew test
