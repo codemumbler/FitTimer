@@ -11,6 +11,8 @@ public class SessionRunner {
     private TextView timerDisplay;
     private TextToSpeechWrapper textToSpeech;
 
+    private CountDownTimerFactory timerFactory;
+
     SessionRunner(final Session session) {
         this.session = session;
     }
@@ -39,6 +41,14 @@ public class SessionRunner {
         return textToSpeech;
     }
 
+    public CountDownTimerFactory getTimerFactory() {
+        return timerFactory;
+    }
+
+    public void setTimerFactory(CountDownTimerFactory timerFactory) {
+        this.timerFactory = timerFactory;
+    }
+
     public void updateTimerText(String timerText) {
         getTimerDisplay().setText(timerText);
     }
@@ -47,7 +57,7 @@ public class SessionRunner {
         if (session.next()) {
             getContentDisplay().setText(session.poseName());
             getTextToSpeech().speak(session.poseName());
-            new FitCountDownTimer(4000, this).start();
+            timerFactory.createCountDownTimer(this).start();
         }
     }
 

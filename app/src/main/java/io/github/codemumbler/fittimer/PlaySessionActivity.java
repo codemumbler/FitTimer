@@ -123,6 +123,7 @@ public class PlaySessionActivity extends AppCompatActivity {
         TextView timer = (TextView) findViewById(R.id.fullscreen_timer);
         sessionRunner.setContentDisplay((TextView) mContentView);
         sessionRunner.setTimerDisplay(timer);
+        sessionRunner.setTimerFactory(new CountDownTimerFactory());
         sessionRunner.setTextToSpeech(new TextToSpeechWrapper(sessionRunner, getApplicationContext()));
     }
 

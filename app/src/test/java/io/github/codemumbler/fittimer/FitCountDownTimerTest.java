@@ -32,8 +32,6 @@ public class FitCountDownTimerTest {
     CountDownTimer countDownTimer;
 
     private FitCountDownTimer fitCountDownTimer;
-
-
     private SessionRunner session;
 
     @Before
