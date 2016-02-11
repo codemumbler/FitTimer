@@ -118,13 +118,13 @@ public class PlaySessionActivity extends AppCompatActivity {
         poseQueue.add("Mountain Pose with arms up and hands clasped");
         poseQueue.add("Standing forward bend");
         poseQueue.add("Downward facing dog");
-        final SessionRunner sessionRunner = new SessionRunner(new Session(poseQueue));
+        final SessionRunner sessionRunner = new SessionRunner(new Session(poseQueue),
+                getApplicationContext());
 
         TextView timer = (TextView) findViewById(R.id.fullscreen_timer);
         sessionRunner.setContentDisplay((TextView) mContentView);
         sessionRunner.setTimerDisplay(timer);
-        sessionRunner.setTimerFactory(new CountDownTimerFactory());
-        sessionRunner.setTextToSpeech(new TextToSpeechWrapper(sessionRunner, getApplicationContext()));
+
     }
 
     @Override
