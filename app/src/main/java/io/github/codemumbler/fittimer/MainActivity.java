@@ -7,8 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String[] SESSIONS = new String[] { "Simple Yoga Session" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +24,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ListView listView = getListView();
+        listView.setTextFilterEnabled(true);
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                SESSIONS));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),
+                        ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -49,5 +67,9 @@ public class MainActivity extends AppCompatActivity {
     public void playSession(View view) {
         Intent intent = new Intent(this, PlaySessionActivity.class);
         startActivity(intent);
+    }
+
+    public ListView getListView() {
+        return (ListView) findViewById(R.id.listView);
     }
 }
