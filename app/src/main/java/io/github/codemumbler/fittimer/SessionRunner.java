@@ -12,7 +12,7 @@ public class SessionRunner {
     private TextView timerDisplay;
 
     private final TextToSpeechWrapper textToSpeech;
-    private final CountDownTimerFactory timerFactory;
+    private CountDownTimerFactory timerFactory;
 
     SessionRunner(final Session session, final Context context) {
         this.session = session;
@@ -34,6 +34,14 @@ public class SessionRunner {
 
     public TextView getTimerDisplay() {
         return timerDisplay;
+    }
+
+    public CountDownTimerFactory getTimerFactory() {
+        return timerFactory;
+    }
+
+    public void setTimerFactory(CountDownTimerFactory timerFactory) {
+        this.timerFactory = timerFactory;
     }
 
     public void updateTimerText(String timerText) {

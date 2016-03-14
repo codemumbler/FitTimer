@@ -38,12 +38,11 @@ public class FitCountDownTimerTest {
     public void setUp() {
         PoseQueue poseQueue = new PoseQueue();
         poseQueue.add("pose 1");
-        session = new SessionRunner(new Session(poseQueue));
+        session = new SessionRunner(new Session(poseQueue), mockContext);
         session.setTimerDisplay(timer);
         session.setContentDisplay(content);
-        session.setTextToSpeech(new TextToSpeechWrapper(session, mockContext));
-        fitCountDownTimer = new FitCountDownTimer(1000, session);
         session.setTimerFactory(new MockFitCountDownTimerFactory(countDownTimer));
+        fitCountDownTimer = new FitCountDownTimer(1000, session);
     }
 
     @Test
