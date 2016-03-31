@@ -4,6 +4,7 @@ public class Session {
 
     private final PoseQueue poseQueue;
     private Pose currentPose;
+    private String name;
 
     public Session(final PoseQueue poseQueue) {
         this.poseQueue = poseQueue;
@@ -28,5 +29,18 @@ public class Session {
 
     public boolean complete() {
         return poseQueue.isEmpty();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

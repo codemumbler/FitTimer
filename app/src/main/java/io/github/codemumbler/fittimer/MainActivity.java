@@ -11,9 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+import io.github.codemumbler.fittimer.model.Session;
+import io.github.codemumbler.fittimer.model.SessionListAdapter;
 
-    private static final String[] SESSIONS = new String[] { "Simple Yoga Session" };
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-                SESSIONS));
+        listView.setAdapter(new SessionListAdapter(this));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
