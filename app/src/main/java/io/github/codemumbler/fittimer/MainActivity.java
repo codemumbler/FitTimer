@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void createSession(View view) {
+        Intent intent = new Intent(this, CreateSession.class);
+        startActivity(intent);
+    }
+
     public ListView getListView() {
         return (ListView) findViewById(R.id.listView);
     }
