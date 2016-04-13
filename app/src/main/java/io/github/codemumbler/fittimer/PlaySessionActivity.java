@@ -113,14 +113,9 @@ public class PlaySessionActivity extends AppCompatActivity {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        Session session = getIntent().getExtras().getParcelable("currentSession");
 
-        List<Pose> poseQueue = new ArrayList<>();
-        poseQueue.add(new Pose("Mountain Pose"));
-        poseQueue.add(new Pose("Mountain Pose with arms up"));
-        poseQueue.add(new Pose("Mountain Pose with arms up and hands clasped"));
-        poseQueue.add(new Pose("Standing forward bend"));
-        poseQueue.add(new Pose("Downward facing dog"));
-        final SessionRunner sessionRunner = new SessionRunner(new Session(poseQueue),
+        final SessionRunner sessionRunner = new SessionRunner(session,
                 getApplicationContext());
 
         TextView timer = (TextView) findViewById(R.id.fullscreen_timer);

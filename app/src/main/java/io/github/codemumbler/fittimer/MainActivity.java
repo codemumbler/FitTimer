@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                playSession(view);
+                playSession(view, (Session) parent.getItemAtPosition(position));
             }
         });
     }
@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void playSession(View view) {
+    public void playSession(View view, Session itemAtPosition) {
         Intent intent = new Intent(this, PlaySessionActivity.class);
+        intent.putExtra("currentSession", itemAtPosition);
         startActivity(intent);
     }
 
