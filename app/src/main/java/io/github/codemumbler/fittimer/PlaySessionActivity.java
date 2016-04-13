@@ -1,7 +1,6 @@
 package io.github.codemumbler.fittimer;
 
 import android.annotation.SuppressLint;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +9,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import io.github.codemumbler.fittimer.model.PoseQueue;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.github.codemumbler.fittimer.model.Pose;
 import io.github.codemumbler.fittimer.model.Session;
 
 /**
@@ -112,12 +114,12 @@ public class PlaySessionActivity extends AppCompatActivity {
         // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
-        PoseQueue poseQueue = new PoseQueue();
-        poseQueue.add("Mountain Pose");
-        poseQueue.add("Mountain Pose with arms up");
-        poseQueue.add("Mountain Pose with arms up and hands clasped");
-        poseQueue.add("Standing forward bend");
-        poseQueue.add("Downward facing dog");
+        List<Pose> poseQueue = new ArrayList<>();
+        poseQueue.add(new Pose("Mountain Pose"));
+        poseQueue.add(new Pose("Mountain Pose with arms up"));
+        poseQueue.add(new Pose("Mountain Pose with arms up and hands clasped"));
+        poseQueue.add(new Pose("Standing forward bend"));
+        poseQueue.add(new Pose("Downward facing dog"));
         final SessionRunner sessionRunner = new SessionRunner(new Session(poseQueue),
                 getApplicationContext());
 

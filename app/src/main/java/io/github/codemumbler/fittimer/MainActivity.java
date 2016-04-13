@@ -11,10 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.Serializable;
+
 import io.github.codemumbler.fittimer.model.Session;
 import io.github.codemumbler.fittimer.model.SessionListAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int CREATE_CUSTOM_SESSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSession(View view) {
         Intent intent = new Intent(this, CreateSession.class);
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_CUSTOM_SESSION);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_CUSTOM_SESSION) {
+            if (resultCode == RESULT_OK) {
+                Session session = data.getExtras().getParcelable("newCustomSession");
+                ((SessionListAdapter)getListView().getAdapter()).add(session);
+            }
+        }
     }
 
     public ListView getListView() {
