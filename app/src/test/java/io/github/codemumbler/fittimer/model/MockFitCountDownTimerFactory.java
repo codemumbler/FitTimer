@@ -1,8 +1,9 @@
-package io.github.codemumbler.fittimer;
+package io.github.codemumbler.fittimer.model;
 
 import android.os.CountDownTimer;
 
-import io.github.codemumbler.fittimer.model.Session;
+import io.github.codemumbler.fittimer.SessionRunner;
+import io.github.codemumbler.fittimer.model.CountDownTimerFactory;
 
 public class MockFitCountDownTimerFactory extends CountDownTimerFactory {
 

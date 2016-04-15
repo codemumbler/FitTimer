@@ -26,13 +26,13 @@ public class SessionTest {
     @Test
     public void firstPose() {
         session.start();
-        Assert.assertEquals(POSE_1, session.poseName());
+        Assert.assertEquals(POSE_1, session.getCurrentPose().getName());
     }
 
     @Test
     public void next() {
         session.start();
         session.next();
-        Assert.assertEquals(POSE_2, session.poseName());
+        Assert.assertEquals(POSE_2, session.getCurrentPose().getName());
     }
 }

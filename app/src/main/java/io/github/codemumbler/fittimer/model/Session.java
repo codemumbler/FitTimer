@@ -38,8 +38,8 @@ public class Session implements Parcelable {
         next();
     }
 
-    public String poseName() {
-        return this.currentPose.getName();
+    public Pose getCurrentPose() {
+        return this.currentPose;
     }
 
     public boolean next() {

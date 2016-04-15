@@ -6,13 +6,20 @@ import android.os.Parcelable;
 public class Pose implements Parcelable {
 
     private String name;
+    private int duration;
+
+    public Pose(String name, int duration) {
+        this.name = name;
+        this.duration = duration;
+    }
 
     public Pose(String name) {
-        this.name = name;
+        this(name, 45);
     }
 
     protected Pose(Parcel in) {
-        name = in.readString();
+        this.name = in.readString();
+        this.duration = in.readInt();
     }
 
     public static final Creator<Pose> CREATOR = new Creator<Pose>() {
@@ -31,9 +38,11 @@ public class Pose implements Parcelable {
         return name;
     }
 
+    public int getDuration() { return duration; }
+
     @Override
     public String toString() {
-        return name;
+        return name + " for " + duration + " seconds";
     }
 
     @Override
@@ -44,5 +53,6 @@ public class Pose implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeInt(duration);
     }
 }

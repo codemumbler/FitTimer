@@ -3,6 +3,7 @@ package io.github.codemumbler.fittimer;
 import android.content.Context;
 import android.widget.TextView;
 
+import io.github.codemumbler.fittimer.model.CountDownTimerFactory;
 import io.github.codemumbler.fittimer.model.Session;
 
 public class SessionRunner {
@@ -50,9 +51,9 @@ public class SessionRunner {
 
     public void next() {
         if (session.next()) {
-            getContentDisplay().setText(session.poseName());
-            textToSpeech.speak(session.poseName());
-            timerFactory.createCountDownTimer(this).start();
+            getContentDisplay().setText(session.getCurrentPose().getName());
+            textToSpeech.speak(session.getCurrentPose().getName());
+            timerFactory.createCountDownTimer(this, session.getCurrentPose().getDuration()).start();
         }
     }
 

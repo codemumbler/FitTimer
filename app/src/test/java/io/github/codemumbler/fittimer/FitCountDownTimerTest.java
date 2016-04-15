@@ -17,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.codemumbler.fittimer.model.MockFitCountDownTimerFactory;
 import io.github.codemumbler.fittimer.model.Pose;
 import io.github.codemumbler.fittimer.model.Session;
 
@@ -40,7 +41,7 @@ public class FitCountDownTimerTest {
     @Before
     public void setUp() {
         List<Pose> poseQueue = new ArrayList<>();
-        poseQueue.add(new Pose("pose 1"));
+        poseQueue.add(new Pose("pose 1", 1));
         session = new SessionRunner(new Session(poseQueue), mockContext);
         session.setTimerDisplay(timer);
         session.setContentDisplay(content);
