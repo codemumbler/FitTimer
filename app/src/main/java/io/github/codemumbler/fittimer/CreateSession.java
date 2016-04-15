@@ -29,8 +29,11 @@ public class CreateSession extends AppCompatActivity {
     }
 
     public void addPose(View view) {
-        EditText text = (EditText) findViewById(R.id.poseName);
-        ((SessionCreatorListAdapter) getListView().getAdapter()).add(new Pose(text.getText().toString()));
+        EditText nameText = (EditText) findViewById(R.id.poseName);
+        EditText durationText =  (EditText) findViewById(R.id.poseDuration);
+        Integer duration = Integer.valueOf(durationText.getText().toString());
+        Pose pose = new Pose(nameText.getText().toString(), duration);
+        ((SessionCreatorListAdapter) getListView().getAdapter()).add(pose);
         setListViewHeightBasedOnItems(getListView());
     }
 
