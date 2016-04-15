@@ -14,7 +14,7 @@ public class MockFitCountDownTimerFactory extends CountDownTimerFactory {
     }
 
     @Override
-    public CountDownTimer createCountDownTimer(SessionRunner session) {
+    public CountDownTimer createCountDownTimer(SessionRunner session, int duration) {
         return countDownTimer;
     }
 }
