@@ -8,13 +8,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.io.Serializable;
-
 import io.github.codemumbler.fittimer.model.Session;
-import io.github.codemumbler.fittimer.model.SessionListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

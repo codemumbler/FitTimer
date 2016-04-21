@@ -13,7 +13,6 @@ import java.util.List;
 
 import io.github.codemumbler.fittimer.model.Pose;
 import io.github.codemumbler.fittimer.model.Session;
-import io.github.codemumbler.fittimer.model.SessionCreatorListAdapter;
 
 public class CreateSession extends AppCompatActivity {
 

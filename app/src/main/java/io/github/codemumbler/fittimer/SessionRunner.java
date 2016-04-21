@@ -3,7 +3,7 @@ package io.github.codemumbler.fittimer;
 import android.content.Context;
 import android.widget.TextView;
 
-import io.github.codemumbler.fittimer.model.CountDownTimerFactory;
+import io.github.codemumbler.fittimer.model.FitCountDownTimer;
 import io.github.codemumbler.fittimer.model.Session;
 
 public class SessionRunner {
@@ -13,11 +13,9 @@ public class SessionRunner {
     private TextView timerDisplay;
 
     private final TextToSpeechWrapper textToSpeech;
-    private CountDownTimerFactory timerFactory;
 
     SessionRunner(final Session session, final Context context) {
         this.session = session;
-        this.timerFactory = new CountDownTimerFactory();
         this.textToSpeech = new TextToSpeechWrapper(this, context);
     }
 
@@ -37,23 +35,19 @@ public class SessionRunner {
         return timerDisplay;
     }
 
-    public CountDownTimerFactory getTimerFactory() {
-        return timerFactory;
-    }
-
-    public void setTimerFactory(CountDownTimerFactory timerFactory) {
-        this.timerFactory = timerFactory;
-    }
-
-    public void updateTimerText(String timerText) {
-        getTimerDisplay().setText(timerText);
+    public void updateTimerText(Double remainingTimeInSeconds) {
+        getTimerDisplay().setText(String.format("%.1f", remainingTimeInSeconds));
     }
 
     public void next() {
         if (session.next()) {
             getContentDisplay().setText(session.getCurrentPose().getName());
             textToSpeech.speak(session.getCurrentPose().getName());
-            timerFactory.createCountDownTimer(this, session.getCurrentPose().getDuration()).start();
+            FitCountDownTimer timer = new FitCountDownTimer(session.getCurrentPose().getDuration(),
+                    new AndroidFitHandler(this));
+            timer.start();
+        } else {
+            complete();
         }
     }
 

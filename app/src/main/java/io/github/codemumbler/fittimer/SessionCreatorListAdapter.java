@@ -1,10 +1,12 @@
-package io.github.codemumbler.fittimer.model;
+package io.github.codemumbler.fittimer;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.github.codemumbler.fittimer.model.Pose;
 
 public class SessionCreatorListAdapter extends ArrayAdapter {
 
