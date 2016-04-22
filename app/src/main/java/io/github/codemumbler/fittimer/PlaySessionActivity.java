@@ -90,6 +90,8 @@ public class PlaySessionActivity extends AppCompatActivity {
         }
     };
 
+    private SessionRunner sessionRunner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,13 +117,22 @@ public class PlaySessionActivity extends AppCompatActivity {
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
         Session session = getIntent().getExtras().getParcelable("currentSession");
 
-        final SessionRunner sessionRunner = new SessionRunner(session,
-                getApplicationContext());
+        sessionRunner = new SessionRunner(session,
+                getApplicationContext(), new SessionRunner.Callback() {
+            @Override
+            public void execute() {
+                sessionRunner.start();
+            }
+        });
 
         TextView timer = (TextView) findViewById(R.id.fullscreen_timer);
         sessionRunner.setContentDisplay((TextView) mContentView);
         sessionRunner.setTimerDisplay(timer);
 
+    }
+
+    public void pausePlay(View view) {
+        sessionRunner.pausePlay();
     }
 
     @Override

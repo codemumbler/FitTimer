@@ -8,12 +8,12 @@ public class TextToSpeechWrapper {
 
     private final TextToSpeech textToSpeech;
 
-    public TextToSpeechWrapper(final SessionRunner sessionRunner, final Context context) {
+    public TextToSpeechWrapper(final SessionRunner.Callback callback, final Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
-                    sessionRunner.next();
+                    callback.execute();
                 }
             });
         } else {
