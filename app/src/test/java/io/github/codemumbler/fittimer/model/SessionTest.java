@@ -25,14 +25,30 @@ public class SessionTest {
 
     @Test
     public void firstPose() {
-        session.start();
         Assert.assertEquals(POSE_1, session.getCurrentPose().getName());
     }
 
     @Test
     public void next() {
-        session.start();
         session.next();
         Assert.assertEquals(POSE_2, session.getCurrentPose().getName());
+    }
+
+    @Test
+    public void nextPastLast() {
+        session.next();
+        Assert.assertFalse(session.next());
+    }
+
+    @Test
+    public void prev() {
+        session.next();
+        session.prev();
+        Assert.assertEquals(POSE_1, session.getCurrentPose().getName());
+    }
+
+    @Test
+    public void prevPastFirst() {
+        Assert.assertFalse(session.prev());
     }
 }

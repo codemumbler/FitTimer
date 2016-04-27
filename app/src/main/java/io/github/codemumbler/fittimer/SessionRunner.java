@@ -13,6 +13,7 @@ public class SessionRunner {
     private TextView timerDisplay;
     private FitCountDownTimer timer;
     private boolean isPaused = true;
+    private Callback completionCallback;
 
     private final TextToSpeechWrapper textToSpeech;
 
@@ -43,19 +44,29 @@ public class SessionRunner {
 
     public void next() {
         if (session.next()) {
-            getContentDisplay().setText(session.getCurrentPose().getName());
-            textToSpeech.speak(session.getCurrentPose().getName());
-            timer = new FitCountDownTimer(session.getCurrentPose().getDuration(),
-                    new AndroidFitHandler(this));
-            timer.start();
-            isPaused = false;
+            startPose();
         } else {
             complete();
         }
     }
 
+    private void startPose() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        getContentDisplay().setText(session.getCurrentPose().getName());
+        textToSpeech.speak(session.getCurrentPose().getName());
+        timer = new FitCountDownTimer(session.getCurrentPose().getDuration(),
+                new AndroidFitHandler(this));
+        timer.start();
+        isPaused = false;
+    }
+
     public boolean complete() {
         textToSpeech.shutdown();
+        if (this.completionCallback != null) {
+            completionCallback.execute();
+        }
         return session.complete();
     }
 
@@ -83,7 +94,18 @@ public class SessionRunner {
         }
     }
 
+    public void onComplete(Callback callback) {
+        completionCallback = callback;
+    }
+
+    public void prev() {
+        if (session.prev()) {
+            startPose();
+        }
+    }
+
     public interface Callback {
-        public void execute();
+
+        void execute();
     }
 }

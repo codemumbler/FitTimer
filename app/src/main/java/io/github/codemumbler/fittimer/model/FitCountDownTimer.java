@@ -38,6 +38,14 @@ public class FitCountDownTimer {
         }
     }
 
+    public void cancel() {
+        if (task != null) {
+            task.cancel();
+            totalTime = 0;
+            task = null;
+        }
+    }
+
     private class FitCountDownTimerTask extends TimerTask {
 
         long startTime = System.currentTimeMillis();

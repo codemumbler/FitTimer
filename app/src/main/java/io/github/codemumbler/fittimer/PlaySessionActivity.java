@@ -9,10 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.github.codemumbler.fittimer.model.Pose;
 import io.github.codemumbler.fittimer.model.Session;
 
 /**
@@ -114,7 +110,7 @@ public class PlaySessionActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        findViewById(R.id.pause_play).setOnTouchListener(mDelayHideTouchListener);
         Session session = getIntent().getExtras().getParcelable("currentSession");
 
         sessionRunner = new SessionRunner(session,
@@ -122,6 +118,14 @@ public class PlaySessionActivity extends AppCompatActivity {
             @Override
             public void execute() {
                 sessionRunner.start();
+            }
+        });
+
+        sessionRunner.onComplete(new SessionRunner.Callback() {
+
+            @Override
+            public void execute() {
+                finish();
             }
         });
 
@@ -133,6 +137,14 @@ public class PlaySessionActivity extends AppCompatActivity {
 
     public void pausePlay(View view) {
         sessionRunner.pausePlay();
+    }
+
+    public void nextPose(View view) {
+        sessionRunner.next();
+    }
+
+    public void prevPose(View view) {
+        sessionRunner.prev();
     }
 
     @Override

@@ -4,20 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Session implements Parcelable {
 
-    private ArrayList<Pose> poseQueue;
-    private Pose currentPose;
+    private List<Pose> poseQueue;
+    private int currentPose;
     private String name;
 
     public Session(final List<Pose> poseQueue) {
-        this.poseQueue = (ArrayList<Pose>) poseQueue;
+        this.currentPose = 0;
+        this.poseQueue = poseQueue;
     }
 
     protected Session(Parcel in) {
         name = in.readString();
+        this.currentPose = 0;
         this.poseQueue = new ArrayList<>();
         in.readTypedList(poseQueue, Pose.CREATOR);
     }
@@ -35,24 +38,25 @@ public class Session implements Parcelable {
     };
 
     public void start() {
-        next();
+
     }
 
     public Pose getCurrentPose() {
-        return this.currentPose;
+        return this.poseQueue.get(currentPose);
     }
 
     public boolean next() {
         if (!complete()) {
-            this.currentPose = poseQueue.remove(0);
+            this.currentPose++;
             return true;
         }
         return false;
     }
 
-
     public boolean complete() {
-        return poseQueue.isEmpty();
+        if (currentPose + 1 >= poseQueue.size())
+            return true;
+        return false;
     }
 
     public String getName() {
@@ -77,5 +81,13 @@ public class Session implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeTypedList(poseQueue);
+    }
+
+    public boolean prev() {
+        if (currentPose == 0) {
+            return false;
+        }
+        this.currentPose--;
+        return true;
     }
 }

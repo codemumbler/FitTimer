@@ -48,13 +48,33 @@
             tools:ignore="UselessParent">
 
             <Button
-                android:id="@+id/dummy_button"
+                android:id="@+id/prev"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Prev"
+                android:onClick="prevPose"/>
+
+            <ToggleButton
+                android:id="@+id/pause_play"
                 style="?metaButtonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Pause/Play"
-                android:onClick="pausePlay" />
+                android:onClick="pausePlay"
+                android:textOff="Pause"
+                android:textOn="Play" />
+
+            <Button
+                android:id="@+id/next"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Next"
+                android:onClick="nextPose"/>
 
         </LinearLayout>
 
