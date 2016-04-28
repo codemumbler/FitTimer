@@ -9,7 +9,7 @@ public abstract class FitHandler {
         tickCallback = callback;
     }
 
-    public void tick(double remainingTime) {
+    public void tick(long remainingTime) {
         if (tickCallback != null) {
             tickCallback.execute(remainingTime);
         }
@@ -27,6 +27,6 @@ public abstract class FitHandler {
 
     public interface Callback {
 
-        void execute(double remainingTime);
+        void execute(long remainingTime);
     }
 }

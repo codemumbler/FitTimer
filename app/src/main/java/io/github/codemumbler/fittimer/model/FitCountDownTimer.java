@@ -9,17 +9,22 @@ public class FitCountDownTimer {
     private Timer timer;
     private long totalTime;
     private final FitHandler handler;
-    private TimerTask task;
-    private long remainingTime;
+    private FitCountDownTimerTask task;
+    private final Clock clock;
 
     /**
-     * @param totalTimeInSeconds the length of time the timer will run in seconds
+     * @param totalTime the length of time the timer will run in seconds
      * @param handler
      */
-    public FitCountDownTimer(final double totalTimeInSeconds, final FitHandler handler) {
-        this.totalTime = (long) (totalTimeInSeconds * 1000);
+    public FitCountDownTimer(final long totalTime, final FitHandler handler) {
+        this(totalTime, handler, new SystemClock());
+    }
+
+    public FitCountDownTimer(final long totalTime, final FitHandler handler, final Clock clock) {
+        this.totalTime = totalTime;
         this.handler = handler;
         timer = new Timer();
+        this.clock = clock;
     }
 
     /**
@@ -33,7 +38,7 @@ public class FitCountDownTimer {
     public void pause() {
         if (task != null) {
             task.cancel();
-            totalTime = remainingTime;
+            totalTime = task.getRemainingTime();
             task = null;
         }
     }
@@ -48,19 +53,24 @@ public class FitCountDownTimer {
 
     private class FitCountDownTimerTask extends TimerTask {
 
-        long startTime = System.currentTimeMillis();
-        long endTime = startTime + totalTime;
+        private long startTime = clock.currentTimeMillis();
+        private long endTime = startTime + totalTime;
+        private long remainingTime = totalTime;
 
         @Override
         public void run() {
-            remainingTime = endTime - System.currentTimeMillis();
+            remainingTime = endTime - clock.currentTimeMillis();
             if (remainingTime < 0) {
                 handler.tick(0);
                 handler.finish();
                 this.cancel();
                 return;
             }
-            handler.tick(remainingTime/1000.0);
+            handler.tick(remainingTime);
+        }
+
+        public long getRemainingTime() {
+            return remainingTime;
         }
     }
 }

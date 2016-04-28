@@ -13,7 +13,7 @@ class AndroidFitHandler extends FitHandler {
     AndroidFitHandler(final SessionRunner session) {
         this.tickHandler = new Handler() {
             public void handleMessage(Message msg) {
-                Double remainingTime = (Double) msg.obj;
+                Long remainingTime = (Long) msg.obj;
                 session.updateTimerText(remainingTime);
             }
         };
@@ -24,13 +24,13 @@ class AndroidFitHandler extends FitHandler {
         };
         onTick(new Callback() {
             @Override
-            public void execute(double remainingTime) {
+            public void execute(long remainingTime) {
                 tickHandler.obtainMessage(1, remainingTime).sendToTarget();
             }
         });
         onFinish(new Callback() {
             @Override
-            public void execute(double remainingTime) {
+            public void execute(long remainingTime) {
                 finishHandler.obtainMessage(2).sendToTarget();
             }
         });

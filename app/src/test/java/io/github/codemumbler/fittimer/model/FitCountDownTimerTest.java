@@ -7,85 +7,96 @@ import org.junit.Test;
 
 public class FitCountDownTimerTest {
 
+    public static final int TOTAL_TIME = 10000;
     private FitHandler fitHandler;
-    private int callbackCount;
     private FitCountDownTimer fitCountDownTimer;
-    private double lastRemainingTime;
-    private boolean completeAfterFirstTick;
+    private MockClock clock;
+    private boolean done = false;
 
     @Before
     public void setUp() {
-        callbackCount = 0;
-        completeAfterFirstTick = false;
+        clock = new MockClock();
         fitHandler = new MockFitHandler();
-        fitCountDownTimer = new FitCountDownTimer(0.1, fitHandler);
-        FitHandler.Callback handler = new FitHandler.Callback() {
-            @Override
-            public void execute(double remainingTime) {
-                lastRemainingTime = remainingTime;
-                callbackCount++;
-                if (completeAfterFirstTick) {
-                    fitCountDownTimer.pause();
-                }
-            }
-        };
-        lastRemainingTime = -1;
-        fitHandler.onTick(handler);
-        fitHandler.onFinish(handler);
+        fitCountDownTimer = new FitCountDownTimer(TOTAL_TIME, fitHandler, clock);
     }
 
     @Test
     public void tickUpdatesDisplayValue() throws Exception {
         fitCountDownTimer.start();
-        completeAfterTick(1);
-        Assert.assertEquals(0.1, lastRemainingTime/1000.0, 0.1);
+        clock.tick();
+        assertRemainingTimeAfterTick(9899);
     }
 
-    private void completeAfterTick(int tickCount) {
-        if (tickCount == 1) {
-            completeAfterFirstTick = true;
-        }
-        long startTime = System.currentTimeMillis();
-        while (callbackCount < tickCount) {
-            Thread.yield();
-            if (System.currentTimeMillis() - startTime > 1000) {
-                Assert.fail("test has failed");
-            }
-        }
-    }
+
 
     @Test
     public void onFinishRanUntilCompletion() throws Exception {
         fitCountDownTimer.start();
-        completeAfterTick(3);
-        Assert.assertEquals(0.0, lastRemainingTime, 0);
-    }
+        assertRemainingTimeAtFinish(0);
 
-    @Test
-    public void onFinishCallback() throws Exception {
-        fitCountDownTimer.start();
-        completeAfterTick(3);
-        // 3 or 4 ticks are acceptable
-        Assert.assertTrue(callbackCount >= 3);
     }
 
     @Test
     public void pause() throws Exception {
         fitCountDownTimer.start();
         fitCountDownTimer.pause();
-        Thread.yield();
-        Assert.assertEquals(-1.0, lastRemainingTime, 0.0);
+        assertTickCallbackIsNotCalled();
     }
 
     @Test
     public void resume() throws Exception {
-
-        fitCountDownTimer = new FitCountDownTimer(1, fitHandler);
         fitCountDownTimer.start();
         fitCountDownTimer.pause();
-        Thread.yield();
+        clock.tick();
         fitCountDownTimer.start();
-        completeAfterTick(3);
-        Assert.assertEquals(3, callbackCount);
+        clock.tick();
+        assertRemainingTimeAfterTick(9899);
+    }
+
+
+
+
+    private void assertRemainingTimeAfterTick(final int expectedTime) {
+        FitHandler.Callback handler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(expectedTime, remainingTime);
+                done = true;
+            }
+        };
+        fitHandler.onTick(handler);
+        while(!done) {
+            Thread.yield();
+        }
+    }
+
+    private void assertTickCallbackIsNotCalled() {
+        FitHandler.Callback handler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.fail("Should not be called");
+            }
+        };
+        fitHandler.onTick(handler);
+        // give TimerTask time to be woken up
+        for (int wait = 0; wait < 10; wait++) {
+            clock.tick();
+            Thread.yield();
+        }
+    }
+
+    private void assertRemainingTimeAtFinish(final int expectedTime) {
+        FitHandler.Callback handler = new FitHandler.Callback() {
+            @Override
+            public void execute(long actualTime) {
+                Assert.assertEquals(expectedTime, actualTime);
+                done = true;
+            }
+        };
+        fitHandler.onFinish(handler);
+        while(!done) {
+            clock.tick();
+            Thread.yield();
+        }
     }
 }

@@ -38,8 +38,8 @@ public class SessionRunner {
         return timerDisplay;
     }
 
-    public void updateTimerText(Double remainingTimeInSeconds) {
-        getTimerDisplay().setText(String.format("%.1f", remainingTimeInSeconds));
+    public void updateTimerText(Long remainingTime) {
+        getTimerDisplay().setText(String.format("%.1f", remainingTime/1000.0));
     }
 
     public void next() {
