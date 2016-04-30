@@ -1,0 +1,26 @@
+{
+  "version": 1.0,
+  "name": "Simple Yoga Session",
+  "poses": [
+    {
+      "name": "Mountain Pose",
+      "duration": 15000
+    },
+    {
+      "name": "Mountain Pose with arms up",
+      "duration": 20000
+    },
+    {
+      "name": "Mountain Pose with arms up and hands clasped",
+      "duration": 15000
+    },
+    {
+      "name": "Standing forward bend",
+      "duration": 20000
+    },
+    {
+      "name": "Downward facing dog",
+      "duration": 35000
+    }
+  ]
+}

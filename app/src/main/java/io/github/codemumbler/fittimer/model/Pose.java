@@ -8,7 +8,7 @@ public class Pose implements Parcelable {
     private String name;
     private long duration;
 
-    public Pose(String name, int duration) {
+    public Pose(String name, long duration) {
         this.name = name;
         this.duration = duration;
     }
@@ -42,7 +42,7 @@ public class Pose implements Parcelable {
 
     @Override
     public String toString() {
-        return name + " for " + duration + " seconds";
+        return name + " for " + duration/1000 + " seconds";
     }
 
     @Override
