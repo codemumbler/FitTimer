@@ -157,6 +157,16 @@ public class PlaySessionActivity extends AppCompatActivity {
         delayedHide(100);
     }
 
+    @Override
+    protected void onPause() {
+
+        if (!sessionRunner.isPaused()) {
+            sessionRunner.pausePlay();
+            sessionRunner.complete();
+        }
+        super.onPause();
+    }
+
     private void toggle() {
         if (mVisible) {
             hide();

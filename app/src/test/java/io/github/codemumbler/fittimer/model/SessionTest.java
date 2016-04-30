@@ -21,17 +21,12 @@ public class SessionTest {
         poseQueue.add(new Pose(POSE_1));
         poseQueue.add(new Pose(POSE_2));
         session = new Session(poseQueue);
+        session.next();
     }
 
     @Test
     public void firstPose() {
         Assert.assertEquals(POSE_1, session.getCurrentPose().getName());
-    }
-
-    @Test
-    public void next() {
-        session.next();
-        Assert.assertEquals(POSE_2, session.getCurrentPose().getName());
     }
 
     @Test

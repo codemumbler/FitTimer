@@ -14,13 +14,13 @@ public class Session implements Parcelable {
     private String name;
 
     public Session(final List<Pose> poseQueue) {
-        this.currentPose = 0;
+        this.currentPose = -1;
         this.poseQueue = poseQueue;
     }
 
     protected Session(Parcel in) {
         name = in.readString();
-        this.currentPose = 0;
+        this.currentPose = -1;
         this.poseQueue = new ArrayList<>();
         in.readTypedList(poseQueue, Pose.CREATOR);
     }
@@ -36,10 +36,6 @@ public class Session implements Parcelable {
             return new Session[size];
         }
     };
-
-    public void start() {
-
-    }
 
     public Pose getCurrentPose() {
         return this.poseQueue.get(currentPose);
@@ -84,7 +80,7 @@ public class Session implements Parcelable {
     }
 
     public boolean prev() {
-        if (currentPose == 0) {
+        if (currentPose <= 0) {
             return false;
         }
         this.currentPose--;

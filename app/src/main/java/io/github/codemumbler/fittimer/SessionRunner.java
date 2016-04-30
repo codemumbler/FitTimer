@@ -94,6 +94,10 @@ public class SessionRunner {
         }
     }
 
+    public boolean isPaused() {
+        return isPaused;
+    }
+
     public void onComplete(Callback callback) {
         completionCallback = callback;
     }
