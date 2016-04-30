@@ -1,0 +1,70 @@
+{
+  "version": 1.0,
+  "name": "Tabata sprint intervals",
+  "poses": [
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Sprint",
+      "duration": 20000
+    }
+  ]
+}

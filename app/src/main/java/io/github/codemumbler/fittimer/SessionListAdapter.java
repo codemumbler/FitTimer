@@ -21,11 +21,23 @@ public class SessionListAdapter extends ArrayAdapter {
 
     public SessionListAdapter(Context context) {
         super(context, android.R.layout.simple_list_item_1);
+        try {
+            for (String filename : getContext().getAssets().list("")) {
+                if (filename.endsWith(".json")) {
+                    addSessionFromFile(filename);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addSessionFromFile(String filename) {
         StringBuilder jsonData = new StringBuilder();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(getContext().getAssets().open("simpleyoga.json"), "UTF-8"));
+                    new InputStreamReader(getContext().getAssets().open(filename), "UTF-8"));
 
             String mLine;
             while ((mLine = reader.readLine()) != null) {
