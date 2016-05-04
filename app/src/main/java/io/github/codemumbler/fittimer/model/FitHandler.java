@@ -1,13 +1,16 @@
 package io.github.codemumbler.fittimer.model;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import io.github.codemumbler.fittimer.SessionRunner;
+
 public abstract class FitHandler {
 
     public static final int MILLISECOND_THRESHOLD = 99;
     private Callback finishCallback;
     private Callback tickCallback;
-    private long targetTime = -1;
-    private Callback targetTimeCallback;
-    private boolean targetComplete = false;
+    private SortedSet<TargetTimeEvent> targetTimeEvents = new TreeSet<>();
 
     public void finish() {
         if (finishCallback != null) {
@@ -19,10 +22,11 @@ public abstract class FitHandler {
         if (tickCallback != null) {
             tickCallback.execute(remainingTime);
         }
-        if (targetTimeCallback != null && (targetTime + MILLISECOND_THRESHOLD > remainingTime)
-                && !targetComplete) {
-            targetComplete = true;
-            targetTimeCallback.execute(remainingTime);
+        if (!targetTimeEvents.isEmpty() &&
+                (targetTimeEvents.first().getTargetTime() + MILLISECOND_THRESHOLD > remainingTime)
+                && !targetTimeEvents.first().isTargetComplete()) {
+            targetTimeEvents.first().execute(remainingTime);
+            targetTimeEvents.remove(targetTimeEvents.first());
         }
     }
 
@@ -30,9 +34,8 @@ public abstract class FitHandler {
         finishCallback = callback;
     }
 
-    public void onTargetTime(final long targetTime, final Callback callback) {
-        this.targetTime = targetTime;
-        this.targetTimeCallback = callback;
+    public void addOnTargetTime(final long targetTime, final Callback callback) {
+        targetTimeEvents.add(new TargetTimeEvent(targetTime, callback));
     }
 
     public void onTick(Callback callback) {
@@ -42,5 +45,37 @@ public abstract class FitHandler {
     public interface Callback {
 
         void execute(long remainingTime);
+    }
+
+    private static class TargetTimeEvent implements Comparable {
+        private final long targetTime;
+        private final Callback targetTimeCallback;
+        private boolean targetComplete = false;
+
+        public TargetTimeEvent(final long targetTime, final Callback targetCallback) {
+            this.targetTime = targetTime;
+            this.targetTimeCallback = targetCallback;
+        }
+
+        public long getTargetTime() {
+            return targetTime;
+        }
+
+        public void execute(final long remainingTime) {
+            targetTimeCallback.execute(remainingTime);
+        }
+
+        public boolean isTargetComplete() {
+            return targetComplete;
+        }
+
+        @Override
+        public int compareTo(Object another) {
+            if (!(another instanceof TargetTimeEvent)) {
+                return -1;
+            }
+            TargetTimeEvent anotherTargetTime = (TargetTimeEvent) another;
+            return (int) (anotherTargetTime.getTargetTime() - targetTime);
+        }
     }
 }

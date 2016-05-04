@@ -8,6 +8,7 @@ import org.junit.Test;
 public class FitCountDownTimerTest {
 
     public static final int TOTAL_TIME = 10000;
+    public static final int ONE_SECOND = 1001;
     private FitHandler fitHandler;
     private FitCountDownTimer fitCountDownTimer;
     private MockClock clock;
@@ -26,8 +27,6 @@ public class FitCountDownTimerTest {
         clock.tick();
         assertRemainingTimeAfterTick(9899);
     }
-
-
 
     @Test
     public void onFinishRanUntilCompletion() throws Exception {
@@ -63,12 +62,10 @@ public class FitCountDownTimerTest {
                 done = true;
             }
         };
-        fitHandler.onTargetTime(9000, handler);
-        for (int i=0; i < 13; i++) {
-            clock.tick();
-            Thread.sleep(10);
-        }
-        Assert.assertTrue(done);
+        fitHandler.addOnTargetTime(9000, handler);
+        clock.setTickSize(ONE_SECOND);
+        clock.tick();
+        yield();
     }
 
     @Test
@@ -81,12 +78,37 @@ public class FitCountDownTimerTest {
                 done = true;
             }
         };
-        fitHandler.onTargetTime(9000, handler);
-        for (int i = 0; i < 30; i++) {
-            clock.tick();
-            Thread.sleep(10);
-        }
-        Assert.assertTrue(done);
+        fitHandler.addOnTargetTime(9000, handler);
+        clock.setTickSize(ONE_SECOND);
+        clock.tick();
+        yield();
+    }
+
+    @Test
+    public void multipleTargetEvents() throws Exception {
+        fitCountDownTimer.start();
+        FitHandler.Callback nineSecondHandler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(9, (long) Math.ceil(remainingTime/1000.0));
+                done = true;
+            }
+        };
+        FitHandler.Callback eightSecondHandler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(8, (long) Math.ceil(remainingTime/1000.0));
+                done = true;
+            }
+        };
+        fitHandler.addOnTargetTime(9000, nineSecondHandler);
+        fitHandler.addOnTargetTime(8000, eightSecondHandler);
+        clock.setTickSize(ONE_SECOND);
+        clock.tick();
+        yield();
+        done = false;
+        clock.tick();
+        yield();
     }
 
     private void assertRemainingTimeAfterTick(final int expectedTime) {
@@ -98,6 +120,10 @@ public class FitCountDownTimerTest {
             }
         };
         fitHandler.onTick(handler);
+        yield();
+    }
+
+    private void yield() {
         while (!done) {
             Thread.yield();
         }
