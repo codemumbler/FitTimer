@@ -53,8 +53,41 @@ public class FitCountDownTimerTest {
         assertRemainingTimeAfterTick(9899);
     }
 
+    @Test
+    public void onTargetTimeEvent() throws Exception {
+        fitCountDownTimer.start();
+        FitHandler.Callback handler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(9, (long) Math.ceil(remainingTime/1000.0));
+                done = true;
+            }
+        };
+        fitHandler.onTargetTime(9000, handler);
+        for (int i=0; i < 13; i++) {
+            clock.tick();
+            Thread.sleep(10);
+        }
+        Assert.assertTrue(done);
+    }
 
-
+    @Test
+    public void onTargetTimeEventCalledOnce() throws Exception {
+        fitCountDownTimer.start();
+        FitHandler.Callback handler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(9, (long) Math.ceil(remainingTime/1000.0));
+                done = true;
+            }
+        };
+        fitHandler.onTargetTime(9000, handler);
+        for (int i = 0; i < 30; i++) {
+            clock.tick();
+            Thread.sleep(10);
+        }
+        Assert.assertTrue(done);
+    }
 
     private void assertRemainingTimeAfterTick(final int expectedTime) {
         FitHandler.Callback handler = new FitHandler.Callback() {
@@ -65,12 +98,12 @@ public class FitCountDownTimerTest {
             }
         };
         fitHandler.onTick(handler);
-        while(!done) {
+        while (!done) {
             Thread.yield();
         }
     }
 
-    private void assertTickCallbackIsNotCalled() {
+    private void assertTickCallbackIsNotCalled() throws Exception {
         FitHandler.Callback handler = new FitHandler.Callback() {
             @Override
             public void execute(long remainingTime) {
@@ -81,7 +114,7 @@ public class FitCountDownTimerTest {
         // give TimerTask time to be woken up
         for (int wait = 0; wait < 10; wait++) {
             clock.tick();
-            Thread.yield();
+            Thread.sleep(10);
         }
     }
 
@@ -94,7 +127,7 @@ public class FitCountDownTimerTest {
             }
         };
         fitHandler.onFinish(handler);
-        while(!done) {
+        while (!done) {
             clock.tick();
             Thread.yield();
         }
