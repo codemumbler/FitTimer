@@ -1,5 +1,7 @@
 package io.github.codemumbler.fittimer;
 
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Handler;
 import android.os.Message;
 
@@ -32,7 +34,18 @@ class AndroidFitHandler extends FitHandler {
             @Override
             public void execute(long remainingTime) {
                 finishHandler.obtainMessage(2).sendToTarget();
+                final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
             }
         });
+        for (int i=1000; i<5001; i+=1000) {
+            addOnTargetTime(i, new Callback() {
+                @Override
+                public void execute(long remainingTime) {
+                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+                    tg.startTone(ToneGenerator.TONE_PROP_BEEP);
+                }
+            });
+        }
     }
 }
