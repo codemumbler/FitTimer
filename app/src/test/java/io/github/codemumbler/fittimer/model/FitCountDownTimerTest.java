@@ -19,32 +19,29 @@ public class FitCountDownTimerTest {
         clock = new MockClock();
         fitHandler = new MockFitHandler();
         fitCountDownTimer = new FitCountDownTimer(TOTAL_TIME, fitHandler, clock);
+        fitCountDownTimer.start();
     }
 
     @Test
     public void tickUpdatesDisplayValue() throws Exception {
-        fitCountDownTimer.start();
         clock.tick();
         assertRemainingTimeAfterTick(9899);
     }
 
     @Test
     public void onFinishRanUntilCompletion() throws Exception {
-        fitCountDownTimer.start();
         assertRemainingTimeAtFinish(0);
 
     }
 
     @Test
     public void pause() throws Exception {
-        fitCountDownTimer.start();
         fitCountDownTimer.pause();
         assertTickCallbackIsNotCalled();
     }
 
     @Test
     public void resume() throws Exception {
-        fitCountDownTimer.start();
         fitCountDownTimer.pause();
         clock.tick();
         fitCountDownTimer.start();
@@ -54,7 +51,6 @@ public class FitCountDownTimerTest {
 
     @Test
     public void onTargetTimeEvent() throws Exception {
-        fitCountDownTimer.start();
         FitHandler.Callback handler = new FitHandler.Callback() {
             @Override
             public void execute(long remainingTime) {
@@ -70,7 +66,6 @@ public class FitCountDownTimerTest {
 
     @Test
     public void onTargetTimeEventCalledOnce() throws Exception {
-        fitCountDownTimer.start();
         FitHandler.Callback handler = new FitHandler.Callback() {
             @Override
             public void execute(long remainingTime) {
@@ -86,7 +81,6 @@ public class FitCountDownTimerTest {
 
     @Test
     public void multipleTargetEvents() throws Exception {
-        fitCountDownTimer.start();
         FitHandler.Callback nineSecondHandler = new FitHandler.Callback() {
             @Override
             public void execute(long remainingTime) {
@@ -109,6 +103,29 @@ public class FitCountDownTimerTest {
         done = false;
         clock.tick();
         yield();
+    }
+
+    @Test
+    public void missingTargetEventIsIgnored() throws Exception {
+        FitHandler.Callback elevenHandler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.fail("Should not be called");
+            }
+        };
+        FitHandler.Callback nineHandler = new FitHandler.Callback() {
+            @Override
+            public void execute(long remainingTime) {
+                Assert.assertEquals(9, (long) Math.ceil(remainingTime/1000.0));
+                done = true;
+            }
+        };
+        fitHandler.addOnTargetTime(11000, elevenHandler);
+        fitHandler.addOnTargetTime(9000, nineHandler);
+        while (!done) {
+            clock.tick();
+            Thread.sleep(10);
+        }
     }
 
     private void assertRemainingTimeAfterTick(final int expectedTime) {
@@ -144,7 +161,7 @@ public class FitCountDownTimerTest {
         }
     }
 
-    private void assertRemainingTimeAtFinish(final int expectedTime) {
+    private void assertRemainingTimeAtFinish(final int expectedTime) throws Exception {
         FitHandler.Callback handler = new FitHandler.Callback() {
             @Override
             public void execute(long actualTime) {
@@ -155,7 +172,7 @@ public class FitCountDownTimerTest {
         fitHandler.onFinish(handler);
         while (!done) {
             clock.tick();
-            Thread.yield();
+            Thread.sleep(10);
         }
     }
 }

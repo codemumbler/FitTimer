@@ -3,11 +3,11 @@ package io.github.codemumbler.fittimer.model;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import io.github.codemumbler.fittimer.SessionRunner;
-
 public abstract class FitHandler {
 
-    public static final int MILLISECOND_THRESHOLD = 99;
+    private static final int MILLISECOND_THRESHOLD = 99;
+    private static final int IGNORE_MILLISECOND_THRESHOLD = 300;
+
     private Callback finishCallback;
     private Callback tickCallback;
     private SortedSet<TargetTimeEvent> targetTimeEvents = new TreeSet<>();
@@ -22,12 +22,25 @@ public abstract class FitHandler {
         if (tickCallback != null) {
             tickCallback.execute(remainingTime);
         }
-        if (!targetTimeEvents.isEmpty() &&
-                (targetTimeEvents.first().getTargetTime() + MILLISECOND_THRESHOLD > remainingTime)
-                && !targetTimeEvents.first().isTargetComplete()) {
-            targetTimeEvents.first().execute(remainingTime);
-            targetTimeEvents.remove(targetTimeEvents.first());
+        if (!targetTimeEvents.isEmpty()) {
+            TargetTimeEvent event = targetTimeEvents.first();
+            while (event.getTargetTime() - IGNORE_MILLISECOND_THRESHOLD > remainingTime) {
+                targetTimeEvents.remove(event);
+                if (!targetTimeEvents.isEmpty()) {
+                    event = targetTimeEvents.first();
+                } else {
+                    event = null;
+                    break;
+                }
+            }
+            if (event != null
+                    && (event.getTargetTime() + MILLISECOND_THRESHOLD > remainingTime)
+                    && !event.isTargetComplete()) {
+                event.execute(remainingTime);
+                targetTimeEvents.remove(event);
+            }
         }
+
     }
 
     public void onFinish(Callback callback) {
