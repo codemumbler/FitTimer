@@ -1,0 +1,102 @@
+{
+  "version": 1.0,
+  "name": "7-minute workout",
+  "poses": [
+    {
+      "name": "Jumping jacks",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Wall sit",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Push ups",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Abdominal crunches",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Step-up onto chair",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Squat",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Tricep dips on chair",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Plank",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "High Knees Running in Place",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Lunge",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Push up and rotation",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    },
+    {
+      "name": "Side blank",
+      "duration": 30000
+    },
+    {
+      "name": "Break",
+      "duration": 10000
+    }
+  ]
+}
