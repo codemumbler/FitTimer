@@ -14,12 +14,12 @@ public class SessionRunner {
     private FitCountDownTimer timer;
     private boolean isPaused = true;
     private Callback completionCallback;
+    private Callback onReady;
 
-    private final TextToSpeechWrapper textToSpeech;
+    private TextToSpeechWrapper textToSpeech;
 
-    SessionRunner(final Session session, final Context context, final SessionRunner.Callback callback) {
+    SessionRunner(final Session session) {
         this.session = session;
-        this.textToSpeech = new TextToSpeechWrapper(callback, context);
     }
 
     public void setContentDisplay(TextView contentDisplay) {
@@ -70,8 +70,8 @@ public class SessionRunner {
         return session.complete();
     }
 
-    public void start() {
-        next();
+    public void start(Context context) {
+        this.textToSpeech = new TextToSpeechWrapper(onReady, context);
     }
 
     private void pause() {
@@ -101,6 +101,8 @@ public class SessionRunner {
     public void onComplete(Callback callback) {
         completionCallback = callback;
     }
+
+    public void onReady(Callback callback) { onReady = callback; }
 
     public void prev() {
         if (session.prev()) {

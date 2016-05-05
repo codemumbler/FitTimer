@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import io.github.codemumbler.fittimer.model.FitCountDownTimer;
 import io.github.codemumbler.fittimer.model.Session;
 
 /**
@@ -113,14 +114,17 @@ public class PlaySessionActivity extends AppCompatActivity {
         findViewById(R.id.pause_play).setOnTouchListener(mDelayHideTouchListener);
         Session session = getIntent().getExtras().getParcelable("currentSession");
 
-        sessionRunner = new SessionRunner(session,
-                getApplicationContext(), new SessionRunner.Callback() {
+        final TextView timerTextView = (TextView) findViewById(R.id.fullscreen_timer);
+        sessionRunner = new SessionRunner(session);
+
+        sessionRunner.onReady(new SessionRunner.Callback() {
             @Override
             public void execute() {
-                sessionRunner.start();
+                FitCountDownTimer timer = new FitCountDownTimer(3000,
+                        new StartFitHandler(sessionRunner));
+                timer.start();
             }
         });
-
         sessionRunner.onComplete(new SessionRunner.Callback() {
 
             @Override
@@ -128,11 +132,10 @@ public class PlaySessionActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        TextView timer = (TextView) findViewById(R.id.fullscreen_timer);
         sessionRunner.setContentDisplay((TextView) mContentView);
-        sessionRunner.setTimerDisplay(timer);
+        sessionRunner.setTimerDisplay(timerTextView);
 
+        sessionRunner.start(getApplicationContext());
     }
 
     public void pausePlay(View view) {

@@ -3,10 +3,6 @@
   "name": "Tabata sprint intervals",
   "poses": [
     {
-      "name": "Break",
-      "duration": 10000
-    },
-    {
       "name": "Sprint",
       "duration": 20000
     },
