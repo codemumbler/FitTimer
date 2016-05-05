@@ -64,8 +64,8 @@
                 android:layout_weight="1"
                 android:text="Pause/Play"
                 android:onClick="pausePlay"
-                android:textOff="Pause"
-                android:textOn="Play" />
+                android:textOff="Play"
+                android:textOn="Pause" />
 
             <Button
                 android:id="@+id/next"
