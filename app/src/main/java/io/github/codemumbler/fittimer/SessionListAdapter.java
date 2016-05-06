@@ -9,7 +9,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,12 @@ public class SessionListAdapter extends ArrayAdapter {
         try {
             for (String filename : getContext().getAssets().list("")) {
                 if (filename.endsWith(".json")) {
-                    addSessionFromFile(filename);
+                    addSessionFromFile(getContext().getAssets().open(filename));
+                }
+            }
+            for (String filename : getContext().getFilesDir().list()) {
+                if (filename.endsWith(".json")) {
+                    addSessionFromFile(getContext().openFileInput(filename));
                 }
             }
         } catch (IOException e) {
@@ -32,17 +40,17 @@ public class SessionListAdapter extends ArrayAdapter {
         }
     }
 
-    private void addSessionFromFile(String filename) {
+    private void addSessionFromFile(InputStream inputStream) {
         StringBuilder jsonData = new StringBuilder();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getContext().getAssets().open(filename), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
             String mLine;
             while ((mLine = reader.readLine()) != null) {
                 jsonData.append(mLine);
             }
+            System.out.println(jsonData);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

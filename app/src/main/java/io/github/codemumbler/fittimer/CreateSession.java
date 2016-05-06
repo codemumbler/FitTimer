@@ -1,5 +1,6 @@
 package io.github.codemumbler.fittimer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import io.github.codemumbler.fittimer.model.Pose;
@@ -43,6 +48,23 @@ public class CreateSession extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra("newCustomSession", session);
         setResult(RESULT_OK, data);
+
+        String filename = "customsession.json";
+        File file = new File(getFilesDir(), filename);
+        String output = "{}";
+        try {
+            output = session.toJsonObject().toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream outputStream;
+        try {
+            outputStream = new FileOutputStream(file);
+            outputStream.write(output.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
     }
 

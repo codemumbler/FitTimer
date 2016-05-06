@@ -3,6 +3,10 @@ package io.github.codemumbler.fittimer.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,5 +89,17 @@ public class Session implements Parcelable {
         }
         this.currentPose--;
         return true;
+    }
+
+    public JSONObject toJsonObject() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("version", 1.0);
+        jsonObject.put("name", name);
+        JSONArray array = new JSONArray();
+        for (Pose pose : poseQueue) {
+            array.put(pose.toJsonObject());
+        }
+        jsonObject.putOpt("poses", array);
+        return jsonObject;
     }
 }

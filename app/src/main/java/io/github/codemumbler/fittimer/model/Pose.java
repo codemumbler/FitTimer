@@ -3,6 +3,9 @@ package io.github.codemumbler.fittimer.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Pose implements Parcelable {
 
     private String name;
@@ -54,5 +57,12 @@ public class Pose implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeLong(duration);
+    }
+
+    public JSONObject toJsonObject() throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", name);
+        jsonObject.put("duration", duration);
+        return jsonObject;
     }
 }
