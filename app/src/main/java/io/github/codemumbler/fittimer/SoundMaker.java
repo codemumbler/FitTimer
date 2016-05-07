@@ -1,4 +1,4 @@
-package io.github.codemumbler.fittimer.model;
+package io.github.codemumbler.fittimer;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
