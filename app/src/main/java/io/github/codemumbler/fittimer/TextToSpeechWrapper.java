@@ -14,6 +14,7 @@ public class TextToSpeechWrapper {
                 @Override
                 public void onInit(int status) {
                     callback.execute();
+                    textToSpeech.setSpeechRate(0.75f);
                 }
             });
         } else {

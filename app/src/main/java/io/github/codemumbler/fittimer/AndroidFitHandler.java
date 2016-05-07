@@ -1,7 +1,5 @@
 package io.github.codemumbler.fittimer;
 
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Handler;
 import android.os.Message;
 
@@ -22,6 +20,7 @@ class AndroidFitHandler extends FitHandler {
         this.finishHandler = new Handler() {
             public void handleMessage(Message msg) {
                 session.next();
+                session.endPoseSound();
             }
         };
         onTick(new Callback() {
@@ -34,26 +33,13 @@ class AndroidFitHandler extends FitHandler {
             @Override
             public void execute(long remainingTime) {
                 finishHandler.obtainMessage(2).sendToTarget();
-                try {
-                    final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                    tg.release();
-                } catch (Exception e) {
-                    //ignore missed tone
-                }
             }
         });
         for (int i=1000; i<5001; i+=1000) {
             addOnTargetTime(i, new Callback() {
                 @Override
                 public void execute(long remainingTime) {
-                    try {
-                        final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                        tg.startTone(ToneGenerator.TONE_PROP_BEEP);
-                        tg.release();
-                    } catch (Exception e) {
-                        //ignore missed tone
-                    }
+                    session.tickSound();
                 }
             });
         }

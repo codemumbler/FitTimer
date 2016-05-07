@@ -116,13 +116,13 @@ public class PlaySessionActivity extends AppCompatActivity {
 
         final TextView timerTextView = (TextView) findViewById(R.id.fullscreen_timer);
         sessionRunner = new SessionRunner(session);
+        sessionRunner.setContentDisplay((TextView) mContentView);
+        sessionRunner.setTimerDisplay(timerTextView);
 
         sessionRunner.onReady(new SessionRunner.Callback() {
             @Override
             public void execute() {
-                FitCountDownTimer timer = new FitCountDownTimer(3000,
-                        new StartFitHandler(sessionRunner));
-                timer.start();
+                sessionRunner.start();
             }
         });
         sessionRunner.onComplete(new SessionRunner.Callback() {
@@ -132,10 +132,7 @@ public class PlaySessionActivity extends AppCompatActivity {
                 finish();
             }
         });
-        sessionRunner.setContentDisplay((TextView) mContentView);
-        sessionRunner.setTimerDisplay(timerTextView);
-
-        sessionRunner.start(getApplicationContext());
+        sessionRunner.init(getApplicationContext());
     }
 
     public void pausePlay(View view) {

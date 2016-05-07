@@ -1,10 +1,13 @@
 package io.github.codemumbler.fittimer;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.widget.TextView;
 
 import io.github.codemumbler.fittimer.model.FitCountDownTimer;
 import io.github.codemumbler.fittimer.model.Session;
+import io.github.codemumbler.fittimer.model.SoundMaker;
 
 public class SessionRunner {
 
@@ -13,9 +16,9 @@ public class SessionRunner {
     private TextView timerDisplay;
     private FitCountDownTimer timer;
     private boolean isPaused = true;
+    private boolean transition = false;
     private Callback completionCallback;
     private Callback onReady;
-
     private TextToSpeechWrapper textToSpeech;
 
     SessionRunner(final Session session) {
@@ -54,15 +57,26 @@ public class SessionRunner {
         if (timer != null) {
             timer.cancel();
         }
-        getContentDisplay().setText(session.getCurrentPose().getName());
-        textToSpeech.speak(session.getCurrentPose().getName());
-        timer = new FitCountDownTimer(session.getCurrentPose().getDuration(),
-                new AndroidFitHandler(this));
+        if (session.hasTransitions() && transition) {
+            getContentDisplay().setText(" ");
+            timer = new FitCountDownTimer(session.getTransitionDuration(),
+                    new AndroidFitHandler(this));
+            transition = false;
+        } else if (!session.hasTransitions() || !transition) {
+            getContentDisplay().setText(session.getCurrentPose().getName());
+            textToSpeech.speak(session.getCurrentPose().getName());
+            timer = new FitCountDownTimer(session.getCurrentPose().getDuration(),
+                    new AndroidFitHandler(this));
+            transition = true;
+        }
         timer.start();
         isPaused = false;
     }
 
     public boolean complete() {
+        if (timer != null) {
+            timer.cancel();
+        }
         textToSpeech.shutdown();
         if (this.completionCallback != null) {
             completionCallback.execute();
@@ -70,12 +84,21 @@ public class SessionRunner {
         return session.complete();
     }
 
-    public void start(Context context) {
+    public void init(Context context) {
         this.textToSpeech = new TextToSpeechWrapper(onReady, context);
     }
 
+    public void start() {
+        timer = new FitCountDownTimer(3000, new StartFitHandler(this));
+        timer.start();
+        transition = false;
+        isPaused = false;
+    }
+
     private void pause() {
-        timer.pause();
+        if (timer != null) {
+            timer.pause();
+        }
         isPaused = true;
     }
 
@@ -106,8 +129,17 @@ public class SessionRunner {
 
     public void prev() {
         if (session.prev()) {
+            transition = false;
             startPose();
         }
+    }
+
+    public void endPoseSound() {
+        SoundMaker.startTone(ToneGenerator.TONE_PROP_BEEP2);
+    }
+
+    public void tickSound() {
+        SoundMaker.startTone(ToneGenerator.TONE_PROP_BEEP);
     }
 
     public interface Callback {

@@ -8,4 +8,5 @@
     <string name="default_pose_duration">45</string>
     <string name="add_pose_button">Add</string>
     <string name="create_session_button">Create</string>
+    <string name="get_ready">Get ready...</string>
 </resources>
