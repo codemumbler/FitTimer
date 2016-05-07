@@ -2,6 +2,7 @@ package io.github.codemumbler.fittimer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,12 +45,13 @@ public class CreateSession extends AppCompatActivity {
     public void createNewSession(View view) {
         List<Pose> queue = ((SessionCreatorListAdapter) getListView().getAdapter()).getPoseQueue();
         Session session = new Session(queue);
-        session.setName("Custom Session");
+        EditText sessionName = (EditText) findViewById(R.id.sessionName);
+        session.setName(sessionName.getText().toString());
         Intent data = new Intent();
         data.putExtra("newCustomSession", session);
         setResult(RESULT_OK, data);
 
-        String filename = "customsession.json";
+        String filename = "customsession" + System.currentTimeMillis() + ".json";
         File file = new File(getFilesDir(), filename);
         String output = "{}";
         try {
