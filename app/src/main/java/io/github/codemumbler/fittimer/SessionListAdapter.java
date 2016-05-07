@@ -50,7 +50,6 @@ public class SessionListAdapter extends ArrayAdapter {
             while ((mLine = reader.readLine()) != null) {
                 jsonData.append(mLine);
             }
-            System.out.println(jsonData);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -72,7 +71,8 @@ public class SessionListAdapter extends ArrayAdapter {
                 Pose pose = new Pose(poseObj.getString("name"), poseObj.getLong("duration"));
                 poseQueue.add(pose);
             }
-            Session session = new Session(poseQueue);
+            long transitionDuration = obj.has("transition-duration") ? obj.getLong("transition-duration") : -1;
+            Session session = new Session(poseQueue, transitionDuration);
 
             session.setName(obj.getString("name"));
             super.add(session);

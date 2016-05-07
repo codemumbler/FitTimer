@@ -16,15 +16,22 @@ public class Session implements Parcelable {
     private List<Pose> poseQueue;
     private int currentPose;
     private String name;
+    private long transitionDuration;
 
     public Session(final List<Pose> poseQueue) {
+        this(poseQueue, -1);
+    }
+
+    public Session(final List<Pose> poseQueue, final long transitionDuration) {
         this.currentPose = -1;
         this.poseQueue = poseQueue;
+        this.transitionDuration = transitionDuration;
     }
 
     protected Session(Parcel in) {
         name = in.readString();
         this.currentPose = -1;
+        transitionDuration = in.readLong();
         this.poseQueue = new ArrayList<>();
         in.readTypedList(poseQueue, Pose.CREATOR);
     }
@@ -54,8 +61,9 @@ public class Session implements Parcelable {
     }
 
     public boolean complete() {
-        if (currentPose + 1 >= poseQueue.size())
+        if (currentPose + 1 >= poseQueue.size()) {
             return true;
+        }
         return false;
     }
 
@@ -65,6 +73,10 @@ public class Session implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean hasTransitions() {
+        return (transitionDuration > 0);
     }
 
     @Override
@@ -80,6 +92,7 @@ public class Session implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeLong(transitionDuration);
         dest.writeTypedList(poseQueue);
     }
 
@@ -95,11 +108,16 @@ public class Session implements Parcelable {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("version", 1.0);
         jsonObject.put("name", name);
+        jsonObject.put("transition-duration", transitionDuration);
         JSONArray array = new JSONArray();
         for (Pose pose : poseQueue) {
             array.put(pose.toJsonObject());
         }
         jsonObject.putOpt("poses", array);
         return jsonObject;
+    }
+
+    public long getTransitionDuration() {
+        return transitionDuration;
     }
 }

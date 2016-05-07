@@ -46,4 +46,15 @@ public class SessionTest {
     public void prevPastFirst() {
         Assert.assertFalse(session.prev());
     }
+
+    @Test
+    public void noTransitions() {
+        Assert.assertFalse(session.hasTransitions());
+    }
+
+    @Test
+    public void hasTransitions() {
+        session = new Session(poseQueue, 10);
+        Assert.assertTrue(session.hasTransitions());
+    }
 }
