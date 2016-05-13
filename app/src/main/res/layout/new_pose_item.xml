@@ -24,7 +24,6 @@
         android:maxWidth="32dp"
         android:adjustViewBounds="true"
         android:padding="5dp"
-        android:onClick="showTimePicker"
         android:contentDescription="@string/set_duration" />
 
 </LinearLayout>
