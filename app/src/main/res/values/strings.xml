@@ -15,4 +15,8 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="duration_dialog_title">Pose Duration</string>
+    <string name="sec">sec</string>
+    <string name="default_sec">45</string>
+    <string name="time_separator">:</string>
+    <string name="min">min</string>
 </resources>

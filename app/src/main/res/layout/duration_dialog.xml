@@ -7,18 +7,19 @@
     <EditText android:id="@+id/poseDurationMinutes"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:hint="min"
+        android:hint="@string/min"
         android:inputType="number" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=":" />
+        android:text="@string/time_separator" />
 
     <EditText android:id="@+id/poseDurationSeconds"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:hint="sec"
+        android:hint="@string/sec"
+        android:text="@string/default_sec"
         android:inputType="number" />
 
 </LinearLayout>

@@ -76,7 +76,7 @@ public class SessionCreatorListAdapter extends BaseAdapter {
                             secondsInt = Integer.valueOf(secondsEditText.getText().toString());
                         }
                         long duration = ((minutesInt * 60) + secondsInt);
-                        ((Pose) getItem(position)).setDuration(duration * 1000);
+                        poseQueue.get(position).setDuration(duration * 1000);
                     }
                 });
             }
