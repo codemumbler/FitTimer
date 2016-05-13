@@ -1,12 +1,12 @@
 package io.github.codemumbler.fittimer;
 
-import android.content.Context;
+import android.app.DialogFragment;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -29,16 +29,13 @@ public class CreateSession extends AppCompatActivity {
 
         ListView listView = getListView();
         listView.setTextFilterEnabled(true);
-        listView.setAdapter(new SessionCreatorListAdapter(this));
+        listView.setAdapter(new SessionCreatorListAdapter(this, this));
         setListViewHeightBasedOnItems(getListView());
     }
 
     public void addPose(View view) {
-        EditText nameText = (EditText) findViewById(R.id.poseName);
-        EditText durationText =  (EditText) findViewById(R.id.poseDuration);
-        Integer duration = Integer.valueOf(durationText.getText().toString());
-        Pose pose = new Pose(nameText.getText().toString(), duration * 1000);
-        ((SessionCreatorListAdapter) getListView().getAdapter()).add(pose);
+
+        ((SessionCreatorListAdapter) getListView().getAdapter()).addNewItem();
         setListViewHeightBasedOnItems(getListView());
     }
 

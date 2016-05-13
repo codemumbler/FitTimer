@@ -43,6 +43,14 @@ public class Pose implements Parcelable {
 
     public long getDuration() { return duration; }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
     @Override
     public String toString() {
         return name + " for " + duration/1000 + " seconds";

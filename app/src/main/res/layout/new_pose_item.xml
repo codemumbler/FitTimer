@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/newPoseName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_item_here"
+        android:layout_gravity="center"
+        android:layout_weight=".8" />
+
+    <ImageButton
+        android:id="@+id/setDuration"
+        android:src="@drawable/stopwatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:background="#00ffffff"
+        android:scaleType="fitCenter"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:adjustViewBounds="true"
+        android:padding="5dp"
+        android:onClick="showTimePicker"
+        android:contentDescription="@string/set_duration" />
+
+</LinearLayout>
