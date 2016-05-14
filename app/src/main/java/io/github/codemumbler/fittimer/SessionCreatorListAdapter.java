@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +57,39 @@ public class SessionCreatorListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.new_pose_item, null);
 
         }
+        final View listItemView = convertView;
+        OnSwipeTouchListener touchListener = new OnSwipeTouchListener(context) {
 
-        ImageButton durationButton = (ImageButton) convertView.findViewById(R.id.setDuration);
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(context, "Deleted exercise", Toast.LENGTH_SHORT).show();
+                poseQueue.remove(position);
+                if (poseQueue.isEmpty()) {
+                    poseQueue.add(new Pose(""));
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onMove(float positionX) {
+                listItemView.findViewWithTag("top").setX(listItemView.findViewWithTag("top").getX() + positionX);
+                listItemView.findViewWithTag("bottom").setVisibility(View.VISIBLE);
+                listItemView.findViewWithTag("bottom").setX(listItemView.findViewWithTag("top").getX() - listItemView.findViewWithTag("bottom").getWidth());
+            }
+
+            @Override
+            public void onDrop() {
+                listItemView.findViewWithTag("bottom").setX(0);
+                listItemView.findViewWithTag("bottom").setVisibility(View.GONE);
+                listItemView.findViewWithTag("top").setX(0);
+            }
+        };
+
+        listItemView.setOnTouchListener(touchListener);
+        ImageView dragButton = (ImageView) listItemView.findViewById(R.id.dragGrip);
+        dragButton.setOnTouchListener(touchListener);
+
+        ImageButton durationButton = (ImageButton) listItemView.findViewById(R.id.setDuration);
         durationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +116,7 @@ public class SessionCreatorListAdapter extends BaseAdapter {
             }
         });
 
-        EditText poseNameTextView = (EditText) convertView.findViewById(R.id.newPoseName);
+        EditText poseNameTextView = (EditText) listItemView.findViewById(R.id.newPoseName);
         poseNameTextView.setText(poseQueue.get(position).getName());
         poseNameTextView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,7 +134,7 @@ public class SessionCreatorListAdapter extends BaseAdapter {
                 poseQueue.get(position).setName(s.toString());
             }
         });
-        return convertView;
+        return listItemView;
     }
 
     public List<Pose> getPoseQueue() {

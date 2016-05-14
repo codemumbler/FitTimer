@@ -1,29 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/newPoseName"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:tag="bottom"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/add_item_here"
-        android:layout_gravity="center"
-        android:layout_weight=".8" />
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:visibility="gone">
 
-    <ImageButton
-        android:id="@+id/setDuration"
-        android:src="@drawable/stopwatch"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/deleteIcon"
+            android:src="@android:drawable/ic_delete"
+            android:layout_gravity="center_vertical|end"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/delete_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:tag="top"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|end"
-        android:background="#00ffffff"
-        android:scaleType="fitCenter"
-        android:maxHeight="32dp"
-        android:maxWidth="32dp"
-        android:adjustViewBounds="true"
-        android:padding="5dp"
-        android:contentDescription="@string/set_duration" />
+        >
 
-</LinearLayout>
+        <ImageView android:id="@+id/dragGrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drag"
+            android:layout_gravity="center_vertical|start"
+            android:background="#00ffffff"
+            android:scaleType="fitCenter"
+            android:maxHeight="32dp"
+            android:maxWidth="32dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:contentDescription="@string/drag_from_here" />
+
+        <EditText
+            android:id="@+id/newPoseName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_item_here"
+            android:layout_gravity="center"
+            android:layout_weight=".8" />
+
+        <ImageButton
+            android:id="@+id/setDuration"
+            android:src="@drawable/stopwatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:background="#00ffffff"
+            android:scaleType="fitCenter"
+            android:maxHeight="32dp"
+            android:maxWidth="32dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:contentDescription="@string/set_duration" />
+    </LinearLayout>
+
+</RelativeLayout>
