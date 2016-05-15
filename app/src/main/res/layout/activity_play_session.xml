@@ -30,54 +30,56 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="50dp" />
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        style="?metaButtonBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/black_overlay"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/prev"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_media_previous"
+            android:onClick="prevPose"/>
 
-            <Button
-                android:id="@+id/prev"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Prev"
-                android:onClick="prevPose"/>
+        <ImageButton
+            android:id="@+id/pause"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="pausePlay"
+            android:src="@android:drawable/ic_media_pause"
+            />
 
-            <ToggleButton
-                android:id="@+id/pause_play"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Pause/Play"
-                android:onClick="pausePlay"
-                android:textOff="Play"
-                android:textOn="Pause" />
+        <ImageButton
+            android:id="@+id/play"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="pausePlay"
+            android:src="@android:drawable/ic_media_play"
+            android:visibility="gone"
+            />
 
-            <Button
-                android:id="@+id/next"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Next"
-                android:onClick="nextPose"/>
+        <ImageButton
+            android:id="@+id/next"
+            style="?metaButtonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_media_next"
+            android:onClick="nextPose"/>
 
-        </LinearLayout>
-
-    </FrameLayout>
+    </LinearLayout>
 
 </FrameLayout>
