@@ -83,6 +83,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public ListView getListView() {
-        return (ListView) findViewById(R.id.listView);
+        return (ListView) findViewById(R.id.workoutListView);
     }
 }
