@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import org.json.JSONException;
 
 import java.io.File;
@@ -20,6 +23,8 @@ import io.github.codemumbler.fittimer.model.Session;
 
 public class CreateSession extends AppCompatActivity {
 
+    private static Tracker tracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +34,11 @@ public class CreateSession extends AppCompatActivity {
         listView.setTextFilterEnabled(true);
         listView.setAdapter(new SessionCreatorListAdapter(this, this));
         setListViewHeightBasedOnItems(getListView());
+
+        tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        tracker.setAppVersion("1.0");
+        tracker.setScreenName("CreateScreen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void addPose(View view) {

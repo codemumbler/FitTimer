@@ -34,3 +34,6 @@ captures/
 # Android Studio files
 *.iml
 .idea/
+
+# Workouts
+assets/

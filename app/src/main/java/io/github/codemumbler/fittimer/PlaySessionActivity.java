@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import io.github.codemumbler.fittimer.model.Session;
 
 public class PlaySessionActivity extends AppCompatActivity {
 
     private SessionRunner sessionRunner;
+    private static Tracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,11 @@ public class PlaySessionActivity extends AppCompatActivity {
             }
         });
         sessionRunner.init(getApplicationContext());
+
+        tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        tracker.setAppVersion("1.0");
+        tracker.setScreenName("PlayScreen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public void pausePlay(View view) {
