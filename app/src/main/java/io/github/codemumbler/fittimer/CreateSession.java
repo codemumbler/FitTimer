@@ -23,7 +23,7 @@ import io.github.codemumbler.fittimer.model.Session;
 
 public class CreateSession extends AppCompatActivity {
 
-    private static Tracker tracker;
+    private Tracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +35,9 @@ public class CreateSession extends AppCompatActivity {
         listView.setAdapter(new SessionCreatorListAdapter(this, this));
         setListViewHeightBasedOnItems(getListView());
 
-        tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
-        tracker.setAppVersion("1.0");
-        tracker.setScreenName("CreateScreen");
+        FitTimerApplication application = (FitTimerApplication) getApplication();
+        tracker = application.getDefaultTracker();
+        tracker.setScreenName(CreateSession.class.getName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

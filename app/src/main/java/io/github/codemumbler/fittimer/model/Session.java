@@ -79,6 +79,10 @@ public class Session implements Parcelable {
         return (transitionDuration > 0);
     }
 
+    public int getSessionSize() {
+        return poseQueue.size();
+    }
+
     @Override
     public String toString() {
         return name;

@@ -13,7 +13,7 @@ import io.github.codemumbler.fittimer.model.Session;
 public class PlaySessionActivity extends AppCompatActivity {
 
     private SessionRunner sessionRunner;
-    private static Tracker tracker;
+    private Tracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,9 @@ public class PlaySessionActivity extends AppCompatActivity {
         });
         sessionRunner.init(getApplicationContext());
 
-        tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
-        tracker.setAppVersion("1.0");
-        tracker.setScreenName("PlayScreen");
+        FitTimerApplication application = (FitTimerApplication) getApplication();
+        tracker = application.getDefaultTracker();
+        tracker.setScreenName(PlaySessionActivity.class.getName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

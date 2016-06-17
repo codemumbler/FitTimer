@@ -17,8 +17,9 @@ import io.github.codemumbler.fittimer.model.Session;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int CREATE_CUSTOM_SESSION = 1;
-    private static Tracker tracker;
+    private static final int CREATE_CUSTOM_SESSION = 1;
+
+    private Tracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +37,9 @@ public class MainActivity extends AppCompatActivity {
                 playSession(view, (Session) parent.getItemAtPosition(position));
             }
         });
-        AnalyticsTrackers.initialize(getApplicationContext());
-        tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
-        tracker.setAppVersion("1.0");
-        tracker.setScreenName("MainScreen");
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        tracker.setScreenName("MainScreen");
+        FitTimerApplication application = (FitTimerApplication) getApplication();
+        tracker = application.getDefaultTracker();
+        tracker.setScreenName(MainActivity.class.getName());
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
@@ -75,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PlaySessionActivity.class);
         intent.putExtra("currentSession", itemAtPosition);
         startActivity(intent);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("StartSession")
+                .setLabel(itemAtPosition.getName())
+                .build());
     }
 
     public void createSession(View view) {
@@ -88,8 +86,16 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Session session = data.getExtras().getParcelable("newCustomSession");
                 ((SessionListAdapter)getListView().getAdapter()).add(session);
+                tracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Creation")
+                        .setAction("Created")
+                        .setLabel(session.getName())
+                        .setValue(session.getSessionSize())
+                        .build());
             }
         }
+        tracker.setScreenName("MainScreen");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public ListView getListView() {
