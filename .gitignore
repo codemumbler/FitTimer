@@ -37,3 +37,6 @@ captures/
 
 # Workouts
 assets/
+
+# Encrypted files
+app/google-services.json
