@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@color/primary_light"
     tools:context="io.github.codemumbler.fittimer.PlaySessionActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -14,7 +14,7 @@
         android:layout_height="307dp"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:textColor="#33b5e5"
+        android:textColor="@color/primary_text"
         android:textSize="50sp"
         android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
         android:layout_height="185dp"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:textColor="#33b5e5"
+        android:textColor="@color/primary_text"
         android:textSize="50sp"
         android:textStyle="bold"
         android:layout_gravity="bottom"
