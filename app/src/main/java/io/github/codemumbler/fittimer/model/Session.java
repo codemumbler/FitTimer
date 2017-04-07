@@ -17,6 +17,7 @@ public class Session implements Parcelable {
     private int currentPose;
     private String name;
     private long transitionDuration;
+    private boolean transition = true;
 
     public Session(final List<Pose> poseQueue) {
         this(poseQueue, -1);
@@ -54,7 +55,14 @@ public class Session implements Parcelable {
 
     public boolean next() {
         if (!complete()) {
-            this.currentPose++;
+            if (hasTransitions()){
+                if (!transition || currentPose == -1) {
+                    this.currentPose++;
+                }
+                transition = !transition;
+            } else {
+                this.currentPose++;
+            }
             return true;
         }
         return false;
@@ -123,5 +131,9 @@ public class Session implements Parcelable {
 
     public long getTransitionDuration() {
         return transitionDuration;
+    }
+
+    public boolean isTransition() {
+        return transition;
     }
 }
