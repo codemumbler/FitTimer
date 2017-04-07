@@ -117,4 +117,42 @@ public class SessionTest {
         session.next();
         Assert.assertTrue(session.isTransition());
     }
+
+    @Test
+    public void prevBackToPose1() {
+        startLongSession();
+        session.next();
+        session.next();
+        session.prev();
+        Assert.assertEquals("Pose 2", session.getCurrentPose().getName());
+    }
+
+    @Test
+    public void prevBackToPose1NotInTransition() {
+        startLongSession();
+        session.next();
+        session.next();
+        session.prev();
+        Assert.assertTrue(session.isTransition());
+    }
+
+    @Test
+    public void prevToTransitionPose2() {
+        startLongSession();
+        session.next();
+        session.next();
+        session.next();
+        session.prev();
+        Assert.assertEquals("Pose 2", session.getCurrentPose().getName());
+    }
+
+    @Test
+    public void prevToTransitionPose2True() {
+        startLongSession();
+        session.next();
+        session.next();
+        session.next();
+        session.prev();
+        Assert.assertFalse(session.isTransition());
+    }
 }

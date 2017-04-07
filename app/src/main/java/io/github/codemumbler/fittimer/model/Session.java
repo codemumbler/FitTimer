@@ -112,7 +112,14 @@ public class Session implements Parcelable {
         if (currentPose <= 0) {
             return false;
         }
-        this.currentPose--;
+        if (hasTransitions()){
+            if (transition) {
+                this.currentPose--;
+            }
+            transition = !transition;
+        } else {
+            this.currentPose--;
+        }
         return true;
     }
 
